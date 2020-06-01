@@ -21,11 +21,11 @@ echo "<hr>";
 // -------------------------- super global variable -------------------;
 // $_SERVER: 
 
-echo $_SERVER['PHP_SELF'];
+echo "<b>PHP_SELF: </b>".$_SERVER['PHP_SELF'];
 echo "<br>";
-echo $_SERVER['SCRIPT_NAME'];
+echo "<b>SCRIPT_NAME: </b>".$_SERVER['SCRIPT_NAME'];
 echo "<br>";
-echo $_SERVER['HTTP_USER_AGENT'];
+echo "<b>HTTP_USER_AGENT: </b>".$_SERVER['HTTP_USER_AGENT'];
 echo "<br>";
 echo "<br>";
 
