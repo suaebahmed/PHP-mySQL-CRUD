@@ -15,7 +15,7 @@
 <?php 
     $mysqli = new mysqli("localhost","root","","crud_oparetion") or die(mysqli_error($mysqli));
     $result = $mysqli->query("SELECT * FROM datas WHERE 1");
-    // pre_r($result);
+    // pre_r($result);  // ---------      for debug
     // pre_r($result->fetch_assoc());
     function pre_r($arg){
         echo "<pre>";
@@ -23,9 +23,24 @@
         echo "</pre>";
     }
 ?>
-
+<div style="margin-top: 20px"></div>
 <div class="container">
 <div class="row">
+    <!-- notification msg -->
+    <div class="col-xs-6 justify-content-center">
+        <?php 
+            if(isset($_SESSION['insert_msg'])){
+                echo "<div class='alert alert-success'>".$_SESSION['insert_msg']."</div>";
+                // session_unset(); // doesn't work
+            }
+            if(isset($_SESSION['update_msg'])){
+                echo "<div class='alert alert-success'>".$_SESSION['update_msg']."</div>";
+            }
+            if(isset($_SESSION['delete_msg'])){
+                echo "<div class='alert alert-danger'>".$_SESSION['delete_msg']."</div>";
+            }
+        ?>
+    </div>
         <table class="table">
             <thead>
                 <tr>
@@ -57,8 +72,8 @@
 <div class="container">
     <div class="row justify-content-center mt-5">
         <div class="col-xs-6" id="column">
-
-            <form action="" method="POST">
+            <!-- action: when submit form to load this index page -->
+            <form action="index.php" method="POST">
                 <div class="form-group">
                     <input type="text" name="name" class="form-control" placeholder="name">
                 </div>
@@ -66,7 +81,7 @@
                     <input type="text" name="location" class="form-control" placeholder="location">
                 </div>
                 <div class="form-group">
-                    <input type="submit" name="submit" value="login" class="btn btn-primary">
+                    <input type="submit" name="save" value="save" class="btn btn-primary">
                 </div>
             </form>
 
