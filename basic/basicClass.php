@@ -2,24 +2,29 @@
 
 class Person{
     public $age = 4;
+    public $name = "suaebahmed";
+
     public function speack(){
         // this->$age ==> $this->age
         
         echo $this->age;
         echo "hello";
     }
-    public function __construct(){
-        echo "__construct is called";
-    }
+    // public function __construct(){
+    //     echo "__construct is called";
+    // }
     // public function __destruct(){
     //     echo "__destruct is called";
     // }
 }
 
 $obj = new Person();
-$obj->speack();
-
-echo "<hr>";
+// $obj->speack();
+echo "<pre>";
+print_r($obj);
+echo "</pre>";
+echo $obj->age;
+// echo "<hr>";
 
 class A{
     public function fun(){
@@ -31,8 +36,8 @@ class B extends A{
 }
 // interface
 // abstract
-$b1 = new B();
-$b1->fun();
+// $b1 = new B();
+// $b1->fun();
 
 class myClass{
     static $myVar = 30;
@@ -40,12 +45,12 @@ class myClass{
         echo self::$myVar."<br>";
     }
 }
-echo myClass::$myVar;
-myClass::myMethod();
+// echo myClass::$myVar;
+// myClass::myMethod();
 ?>
 
 
 <?php
-    $myObj = new myClass();
-    $myObj->myMethod();
+    // $myObj = new myClass();
+    // $myObj->myMethod();
 ?>

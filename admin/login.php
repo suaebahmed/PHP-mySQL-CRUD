@@ -14,13 +14,53 @@
     </style>
 </head>
 <body>
+
+<?php
+    $table = 'users';
+    require_once 'db.php';
+    session_start();
+
+    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+        $email = $_REQUEST['email'];
+        $password = $_REQUEST['password'];
+
+        $query = "SELECT * FROM $table WHERE email = '$email'";
+        $result = mysqli_query($link,$query);
+
+        if(mysqli_num_rows($result)> 0){
+            $row = mysqli_fetch_assoc($result);
+            if($row['password'] == md5($password)){
+                header('location: index.php');
+            }else{
+                $password_err = "password is not correct";
+            }
+        }else{
+            $userName_err = "email is not found";
+        }
+    }
+?>
+
+
 <div class="container">
     <div class="manu">
-        <a href="/php"><div class="btn btn-primary">home</div></a>
+        <a href="index.php"><div class="btn btn-primary">home</div></a>
     </div>
     <h1>Login page</h1>
     <div class="row">
         <div class="col-xs-6 ml-auto">
+
+        <div class="msg" style="margin: 10px 0px">
+            <?php
+                if(isset($userName_err)){
+                    echo "<div class='alert alert-warning'>".$userName_err."</div>";
+                }
+                if(isset($password_err)){
+                    echo "<div class='alert alert-warning'>".$password_err."</div>";
+                }
+            ?>
+        </div>
+
             <form action="" method="POST">
                 <div class="form-group">
                     <input type="text" name="email" class="form-control" placeholder="email">
@@ -30,24 +70,12 @@
                 </div>
                 <div class="form-group">
                     <input type="submit" value="login" class="btn btn-primary">
+                    <a href="register.php">register?</a>
+
                 </div>
             </form>
         </div>
     </div>
-
-<?php
-    if($_SERVER['REQUEST_METHOD'] == 'POST'){
-
-        $email = $_REQUEST['email'];
-        $password = $_REQUEST['password'];
-        if(empty($email)){
-            echo "please enter your email";
-        }else{
-            echo "your email is ",$email,"<br>";
-            echo "your password is ",$password;
-        }
-    }
-?>
 
 </div>
 </body>

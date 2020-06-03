@@ -1,5 +1,6 @@
 <?php
-
+// -----------  constant variable  ---------
+    define("msg","Hi developers",true);
 // -------------------------- global variable -------------------;
 $x = 100;
 function fun(){
