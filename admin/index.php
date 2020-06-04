@@ -25,12 +25,14 @@
 <body>
 <div class="container">
     <div class="manu">
+        <i><?php echo $_SESSION['user_login']?></i>
+        <a href="index.php?page=user-profile" style="margin: 0px 10px">user profile</a>
         <a href="login.php"><div class="btn btn-primary">login admin</div></a>
         <a href="logout.php"><div class="btn btn-warning">logout</div></a>
     </div>
 
     <div class="header-text">
-        <h1>Students management system!</h1>
+        <h3>Students management system!</h3>
     </div>
 
     <div class="row">
@@ -80,6 +82,9 @@
                 }
                 if($_GET['page']== "all_users"){
                     require_once 'all_users.php';
+                }
+                if($_GET['page']== "user-profile"){
+                    require_once 'user-profile.php';
                 }
             }else{
                 require_once 'deshbord.php';

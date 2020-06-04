@@ -10,11 +10,12 @@ switch ($requst) {
         getMethod();
     break;
     case 'POST':
-        $data = json_decode(file_get_contents('db.php',true));
+        $data = json_decode(file_get_contents('php://input',true));
         postMethod($data);
         break;
     case 'PUT':
-        updateMethod();
+        $data = json_decode(file_get_contents('php://input',true));
+        updateMethod($data);
         break;
     case 'DELETE':
         deleteMethod();
@@ -31,16 +32,17 @@ function getMethod(){
         $query = "SELECT * FROM $table WHERE 1";
         $result = $link->query($query);
 
-        // $row['title'];
-        // $row['body'];
-        // $row['author']
+        if( $result->num_rows > 0){
 
-        // while ($row = $result->fetch_assoc()) {
-        //     print_r(json_encode($row));
-        // }
-
-        // this string is json formated
-        echo '{"msg": "successfully  we get the data"}';
+            $posts = array();
+            while ($row = $result->fetch_assoc()) {
+                $posts["result"][] = $row;
+            }
+            echo json_encode($posts);
+        }else{
+            // this string is json formated
+            echo '{"msg": "No data found"}';
+        }
         $link->close();
 
 }
@@ -49,8 +51,10 @@ function postMethod($data){
     require_once 'db.php';
     global $table;
 
-    echo $data;
-    //------------  we should data pass by  ------------
+    $title = $data->title;
+    $body = $data->body;
+    $author = $data->author;
+
     // $title = $_POST['title'];
     // $body = $_POST['body'];
     // $author = $_POST['author'];
@@ -63,26 +67,32 @@ function postMethod($data){
         echo '{"msg": "data not inserted inserted"}';
     }
     $link->close();
-
     // error produce by browser and postman look ugly this string is json formated
     // echo "{'msg': 'successfully   data inserted'}";
 }
-function updateMethod(){
+function updateMethod($data){
     require_once 'db.php';
     global $table;
 
+    $id = $data->id;
+    $title = $data->title;
+    $body = $data->body;
+    $author = $data->author;
+
     // there are used PUT request but we hold data by POST super grobal variable
-    $id = $_POST['id'];
-    $title = $_POST['title'];
-    $body = $_POST['body'];
-    $author = $_POST['author'];
+    // $id = $_POST['id'];
+    // $title = $_POST['title'];
+    // $body = $_POST['body'];
+    // $author = $_POST['author'];
 
     $query = "UPDATE $table SET title='$title',body='$body',author='$author' WHERE id = $id";
-    $link->query($query);
+    $result=$link->query($query);
+    if($result){
+        echo '{"msg": "successfully updated"}';
+    }else{
+        echo '{"msg": "data not updated"}';
+    }
     $link->close();
-
-    echo '{"msg": "successfully updated"}';
-
 }
 function deleteMethod(){
     require_once 'db.php';
@@ -91,10 +101,13 @@ function deleteMethod(){
     $id = $_GET['id'];
 
     $query = "DELETE FROM $table WHERE id = $id";
-    $link->query($query);
+    $result=$link->query($query);
+    if($result){
+        echo '{"msg": "delete successfull"}';
+    }else{
+        echo '{"msg": "no deleted data"}';
+    }
     $link->close();
-
-    echo '{"msg": "delete successfull"}';
 }
 
 ?>
