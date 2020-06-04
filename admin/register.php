@@ -23,6 +23,10 @@
     require_once 'db.php';
     session_start();
 
+    if(isset($_SESSION['user_login'])){
+        header('location: index.php');
+    }
+
     $input_error = Array();
     // if(isset($input_error)){ --- always true for array;
 
@@ -63,11 +67,14 @@
                 $query = "INSERT INTO $table(email,password,photo,status) VALUES('$email','$password','$photoName','inactive')";
                 $result = mysqli_query($link,$query);
                 if($result){
-                    $_SESSION['user_register_msg'] = 'successfully user registered';
+
+                    $_SESSION['user_login'] = $email;
+                    $_SESSION['user_register_success'] = 'successfully user registered';
                     move_uploaded_file($_FILES['photo']['tmp_name'],'images/'.$photoName);
                     header("location: index.php");
+                    
                 }else{
-                    $_SESSION['user_register_msg'] = 'Error user registered';
+                    $_SESSION['user_register_err'] = 'Error user registered';
                 }
             }else{
                 $input_error['email-exist'] = "Your email already exists";
@@ -85,12 +92,12 @@
     <h1>Register page</h1>
     <div class="row">
         <div class="col-xs-6 ml-auto">
-                <!---- msg ---->
+                <!---- Session msg ---->
             <div class="msg" style="margin: 10px 0px">
             <?php
-                if(isset($_SESSION['user_register_msg'])){
-                    echo "<div class='alert alert-success'>".$_SESSION['user_register_msg']."</div>";
-                    unset($_SESSION['user_register_msg']);
+                if(isset($_SESSION['user_register_err'])){
+                    echo "<div class='alert alert-danger'>".$_SESSION['user_register_err']."</div>";
+                    unset($_SESSION['user_register_err']);
                 }
             ?>
             </div>
